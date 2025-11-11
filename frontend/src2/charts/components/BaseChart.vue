@@ -48,7 +48,7 @@ function downloadChart() {
 <template>
 	<div class="flex h-full w-full flex-col rounded">
 		<ChartTitle v-if="title" :title="title" />
-		<div ref="chartRef" class="w-full flex-1 overflow-hidden">
+		<div id="chartBase" ref="chartRef" class="w-full flex-1 overflow-hidden">
 			<slot></slot>
 		</div>
 	</div>

@@ -84,7 +84,7 @@ function toggleStickyColumn(column_name: string, is_sticky: boolean) {
 				</template>
 			</DraggableList>
 			<button
-				class="mt-1.5 text-left text-xs text-gray-600 hover:underline"
+				class="mt-1.5 text-left text-xs text-black-600 hover:underline"
 				@click="config.rows.push({} as any)"
 			>
 				+ Add column
@@ -106,7 +106,7 @@ function toggleStickyColumn(column_name: string, is_sticky: boolean) {
 					</template>
 				</DraggableList>
 				<button
-					class="mt-1.5 text-left text-xs text-gray-600 hover:underline"
+					class="mt-1.5 text-left text-xs text-black-600 hover:underline"
 					@click="config.columns.push({} as any)"
 				>
 					+ Add column
@@ -142,7 +142,7 @@ function toggleStickyColumn(column_name: string, is_sticky: boolean) {
 					</template>
 				</DraggableList>
 				<button
-					class="mt-1.5 text-left text-xs text-gray-600 hover:underline"
+					class="mt-1.5 text-left text-xs text-black-600 hover:underline"
 					@click="config.values.push({} as any)"
 				>
 					+ Add column

@@ -9,7 +9,7 @@ export const COLOR_MAP = {
 	teal: '#5FD8C4',
 	orange: '#F8814F',
 	cyan: '#15CCEF',
-	grey: '#A6B1B9',
+	grey: '#000000ff',
 	'#449CF0': '#449CF0',
 	'#ECAD4B': '#ECAD4B',
 	'#761ACB': '#761ACB',

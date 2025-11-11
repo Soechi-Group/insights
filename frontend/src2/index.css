@@ -10,6 +10,24 @@ body {
 	font-feature-settings: 'tnum';
 }
 
+svg text {
+  fill: #000000 !important;
+  opacity: 1 !important;
+  font-weight: 600; /* atau 600, biar lebih tebal */
+}
+
+/* =======================================
+   Override warna garis di dalam #chartBase
+   ======================================= */
+
+
+/* Khusus path yang semula berwarna #E0E6F1 (biasanya gridline) */
+#chartBase path[stroke="#E0E6F1"] {
+  stroke: gray!important;     /* ganti ke hitam pekat */
+}
+
+
+
 @layer components {
 	/* Works on Firefox */
 	* {

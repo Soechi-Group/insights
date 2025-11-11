@@ -26,7 +26,7 @@ function resetOptions() {
 				<template #prefix>
 					<component
 						:is="widgets.getIcon(query.chart.doc.chart_type)"
-						class="mr-1.5 h-4 w-4 text-gray-600"
+						class="mr-1.5 h-4 w-4 text-black-600"
 						stroke-width="1.5"
 					/>
 				</template>

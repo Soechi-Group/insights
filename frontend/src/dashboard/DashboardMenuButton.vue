@@ -25,7 +25,7 @@ async function downloadDashboardImage() {
 		:button="{ icon: 'more-vertical', variant: 'outline' }"
 		:options="[
 			{
-				label: 'Export as PNG',
+				label: 'Export as PNG 3',
 				variant: 'outline',
 				icon: 'download',
 				onClick: () => downloadDashboardImage(),
