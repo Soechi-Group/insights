@@ -68,6 +68,6 @@ state.removeQuery = () => {
 		</div>
 	</div>
 	<div v-else class="flex h-20 w-full flex-col items-center justify-center">
-		<LoadingIndicator class="mb-2 w-6 text-gray-300" />
+		<LoadingIndicator class="mb-2 w-6 text-black-300" />
 	</div>
 </template>

@@ -62,40 +62,43 @@ const label = computed(() => {
 </script>
 
 <template>
-	<div class="h-8 w-full [&>div:first-child]:h-full">
-		<Popover class="h-full">
-			<template #target="{ togglePopover }">
-				<Button
-					variant="outline"
-					class="flex h-full w-full !justify-start overflow-hidden text-sm shadow-sm [&>span]:truncate"
-					@click="togglePopover"
-				>
-					<template #prefix>
-						<DataTypeIcon
-							v-if="filter.filter_type"
-							:column-type="FILTER_TYPES[filter.filter_type][0] as ColumnDataType"
-							class="h-4 w-4 flex-shrink-0"
-							stroke-width="1.5"
-						/>
-					</template>
-					{{ label }}
-				</Button>
-			</template>
-			<template #body-main="{ togglePopover, isOpen }">
-				<div class="w-full p-2">
-					<Filter
-						v-if="isOpen"
-						:filter-type="filter.filter_type"
-						:valuesProvider="stringValuesProvider"
-						v-model:operator="filterState.operator"
-						v-model:value="filterState.value"
-						@update:value="() => togglePopover()"
-					>
-					</Filter>
-				</div>
-			</template>
-		</Popover>
-	</div>
+	<div
+	class="h-8 w-full [&>div:first-child]:h-full 
+           bg-white/40 backdrop-blur-md rounded-md shadow-sm"
+>
+	<Popover class="h-full">
+		<template #target="{ togglePopover }">
+			<Button
+				variant="outline"
+				class="flex h-full w-full !justify-start overflow-hidden text-sm 
+                       shadow-sm [&>span]:truncate bg-white/30 backdrop-blur-sm"
+				@click="togglePopover"
+			>
+				<template #prefix>
+					<DataTypeIcon
+						v-if="filter.filter_type"
+						:column-type="FILTER_TYPES[filter.filter_type][0] as ColumnDataType"
+						class="h-4 w-4 flex-shrink-0"
+						stroke-width="1.5"
+					/>
+				</template>
+				{{ label }}
+			</Button>
+		</template>
+		<template #body-main="{ togglePopover, isOpen }">
+			<div class="w-full p-2 bg-white/50 backdrop-blur-md rounded-md">
+				<Filter
+					v-if="isOpen"
+					:filter-type="filter.filter_type"
+					:valuesProvider="stringValuesProvider"
+					v-model:operator="filterState.operator"
+					v-model:value="filterState.value"
+					@update:value="() => togglePopover()"
+				/>
+			</div>
+		</template>
+	</Popover>
+</div>
 
 	<DashboardFilterEditor v-if="dashboard.isEditingItem(props.item)" :item="props.item" />
 </template>

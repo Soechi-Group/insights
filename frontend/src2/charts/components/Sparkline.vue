@@ -10,7 +10,7 @@ const color = computed(() => props.color || getColors()[0])
 const gradient = computed(() => {
 	return new graphic.LinearGradient(0, 0, 0, 1, [
 		{ offset: 0, color: color.value },
-		{ offset: 1, color: '#fff' },
+		{ offset: 1, color: '#007BE0' },
 	])
 })
 </script>

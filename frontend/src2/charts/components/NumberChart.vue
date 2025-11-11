@@ -107,7 +107,10 @@ function onDoubleClick(measure_name: string) {
 					color,
 				} in cards"
 				:key="measure_name"
-				class="flex max-h-[140px] items-center gap-2 overflow-hidden rounded bg-white px-6 pt-5 shadow cursor-pointer"
+			class="flex h-[140px] items-center gap-2 overflow-hidden rounded 
+            px-6 pt-5 shadow cursor-pointer"
+   style="background-color: rgba(255, 255, 255, 0.5);
+backdrop-filter: blur(4px);"
 				:class="config.comparison ? 'pb-6' : 'pb-3'"
 				@dblclick="onDoubleClick(measure_name)"
 			>
@@ -125,13 +128,14 @@ function onDoubleClick(measure_name: string) {
 						v-if="config.comparison"
 						class="flex items-center gap-1 text-xs font-medium"
 						:class="[
-							config.negative_is_better
-								? delta >= 0
-									? 'text-red-500'
-									: 'text-green-500'
-								: delta >= 0
-								  ? 'text-green-500'
-								  : 'text-red-500',
+						config.negative_is_better
+						? delta >= 0
+							? 'text-red-500 font-bold'
+							: 'text-blue-900 dark:text-blue-300 font-bold'
+						: delta >= 0
+							? 'text-blue-900 dark:text-blue-300 font-bold'
+							: 'text-red-800 font-bold'
+								,
 						]"
 					>
 						<span class="">

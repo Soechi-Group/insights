@@ -208,7 +208,7 @@ page.startIndex = computed(() => (page.current - 1) * page.size)
 page.endIndex = computed(() => Math.min(page.current * page.size, visibleRows.value?.length || 0))
 
 const colorByPercentage = {
-	0: 'bg-white text-gray-900',
+	0: 'bg-white text-black-900',
 	10: 'bg-blue-100 text-blue-900',
 	30: 'bg-blue-200 text-blue-900',
 	60: 'bg-blue-300 text-blue-900',
@@ -280,10 +280,10 @@ function toggleNewColumn() {
 	>
 		<div class="w-full flex-1 overflow-y-auto">
 			<table class="relative h-full w-full border-separate border-spacing-0">
-				<thead ref="$header" class="sticky top-0 z-10 bg-gray-50">
+				<thead ref="$header" class="sticky top-0 z-10 bg-black-50">
 					<tr v-for="headerRow in headers">
 						<td
-							class="sticky left-0 z-10 h-8 whitespace-nowrap border-b border-r bg-gray-50 px-3"
+							class="sticky left-0 z-10 h-8 whitespace-nowrap border-b border-r bg-black-50 px-3"
 							data-column-name="__index"
 							width="1px"
 						></td>
@@ -295,7 +295,7 @@ function toggleNewColumn() {
 								header.isLast && isNumberColumn(header.column.name)
 									? 'text-right'
 									: 'text-left',
-								isStickyColumn(header.column.name) ? 'sticky z-10 bg-gray-50' : '',
+								isStickyColumn(header.column.name) ? 'sticky z-10 bg-black-50' : '',
 							]"
 							:style="getStickyColumnStyle(header.column.name)"
 							:colspan="header.colspan"
@@ -339,7 +339,7 @@ function toggleNewColumn() {
 								@click="toggleNewColumn"
 							>
 								<template #icon>
-									<Plus class="size-4 text-gray-700" :stroke-width="1.5" />
+									<Plus class="size-4 text-black-700" :stroke-width="1.5" />
 								</template>
 							</Button>
 							<slot
@@ -360,24 +360,24 @@ function toggleNewColumn() {
 
 					<tr v-if="props.showFilterRow">
 						<td
-							class="sticky left-0 z-10 h-8 whitespace-nowrap border-b border-r bg-gray-50 px-3"
+							class="sticky left-0 z-10 h-8 whitespace-nowrap border-b border-r bg-black-50 px-3"
 							width="1px"
 						></td>
 						<td
 							v-for="(column, idx) in props.columns"
 							:key="idx"
 							class="h-8 border-b border-r p-1"
-							:class="isStickyColumn(column.name) ? 'sticky z-10 bg-gray-50' : ''"
+							:class="isStickyColumn(column.name) ? 'sticky z-10 bg-black-50' : ''"
 							:style="getStickyColumnStyle(column.name)"
 						>
 							<FormControl
 								type="text"
 								v-model="filterPerColumn[column.name]"
 								autocomplete="off"
-								class="[&_input]:h-6 [&_input]:bg-gray-200/80"
+								class="[&_input]:h-6 [&_input]:bg-black-200/80"
 							>
 								<template #prefix>
-									<Search class="h-4 w-4 text-gray-500" stroke-width="1.5" />
+									<Search class="h-4 w-4 text-black-500" stroke-width="1.5" />
 								</template>
 							</FormControl>
 						</td>
@@ -405,7 +405,7 @@ function toggleNewColumn() {
 
 						<td
 							v-for="col in props.columns"
-							class="h-8 max-w-[24rem] truncate border-b border-r px-3 text-gray-800"
+							class="h-8 max-w-[24rem] truncate border-b border-r px-3 text-black-800"
 							:class="[
 								isNumberColumn(col.name) ? 'tnum text-right' : 'text-left',
 								props.enableColorScale && isNumberColumn(col.name)
@@ -454,7 +454,7 @@ function toggleNewColumn() {
 						<td class="h-8 whitespace-nowrap border-r border-t px-3"></td>
 						<td
 							v-for="col in props.columns"
-							class="h-8 truncate border-r border-t px-3 font-bold text-gray-800"
+							class="h-8 truncate border-r border-t px-3 font-bold text-black-800"
 							:class="[
 								isNumberColumn(col.name) ? 'tnum text-right' : 'text-left',
 								isStickyColumn(col.name) ? 'sticky z-10 bg-white' : '',
@@ -491,7 +491,7 @@ function toggleNewColumn() {
 							v-if="props.enablePagination && visibleRows?.length && page.total > 1"
 							class="flex flex-shrink-0 items-center justify-end gap-2"
 						>
-							<p class="tnum text-sm text-gray-600">
+							<p class="tnum text-sm text-black-600">
 								{{ page.startIndex + 1 }} - {{ page.endIndex }} of
 								{{ visibleRows.length }}
 							</p>
@@ -502,7 +502,7 @@ function toggleNewColumn() {
 									@click="page.prev"
 									:disabled="page.current === 1"
 								>
-									<ChevronLeft class="h-4 w-4 text-gray-700" stroke-width="1.5" />
+									<ChevronLeft class="h-4 w-4 text-black-700" stroke-width="1.5" />
 								</Button>
 								<Button
 									variant="ghost"
@@ -510,7 +510,7 @@ function toggleNewColumn() {
 									:disabled="page.current === page.total"
 								>
 									<ChevronRight
-										class="h-4 w-4 text-gray-700"
+										class="h-4 w-4 text-black-700"
 										stroke-width="1.5"
 									/>
 								</Button>
@@ -519,7 +519,7 @@ function toggleNewColumn() {
 						<slot name="footer-right-actions"></slot>
 						<Button v-if="props.onExport" variant="ghost" @click="props.onExport">
 							<template #icon>
-								<Download class="h-4 w-4 text-gray-700" stroke-width="1.5" />
+								<Download class="h-4 w-4 text-black-700" stroke-width="1.5" />
 							</template>
 						</Button>
 					</div>
@@ -530,8 +530,8 @@ function toggleNewColumn() {
 
 	<div v-else class="flex h-full w-full items-center justify-center">
 		<div class="flex flex-col items-center gap-2">
-			<Table2Icon class="h-16 w-16 text-gray-300" stroke-width="1.5" />
-			<p class="text-center text-gray-500">No data to display.</p>
+			<Table2Icon class="h-16 w-16 text-black-300" stroke-width="1.5" />
+			<p class="text-center text-black-500">No data to display.</p>
 		</div>
 	</div>
 
@@ -539,6 +539,6 @@ function toggleNewColumn() {
 		v-if="props.loading"
 		class="absolute top-10 z-10 flex h-[calc(100%-2rem)] w-full items-center justify-center rounded bg-white/30 backdrop-blur-sm"
 	>
-		<LoadingIndicator class="h-8 w-8 text-gray-700" />
+		<LoadingIndicator class="h-8 w-8 text-black-700" />
 	</div>
 </template>
