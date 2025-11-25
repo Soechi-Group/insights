@@ -9,10 +9,17 @@ import DashboardItem from './DashboardItem.vue'
 import VueGridLayout from './VueGridLayout.vue'
 import { useStorage } from '@vueuse/core'
 const props = defineProps<{ name: string }>()
-
+import bg from '@/assets/bg.png'
 const dashboard_name = await call('insights.api.shared.get_dashboard_name', {
 	dashboard_name: props.name,
 })
+
+const bgStyle = {
+  backgroundImage: `url(${bg})`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat'
+}
 const time = ref("");
 const date = ref("");
 const dashboard = useDashboard(dashboard_name)
@@ -85,7 +92,8 @@ const verticalCompact = useStorage('dashboard_vertical_compact', true)
 
 
 
-	<div class="relative flex h-full w-full overflow-hidden" style="background-image: url('/bg.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+	 <div class="relative flex h-full w-full overflow-hidden":style="bgStyle">
+ 
     
     <div ref="dashboardContainer" class="flex-1 overflow-y-auto p-4">
       
