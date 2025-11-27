@@ -9,7 +9,7 @@ import DashboardItem from './DashboardItem.vue'
 import VueGridLayout from './VueGridLayout.vue'
 import { useStorage } from '@vueuse/core'
 const props = defineProps<{ name: string }>()
-import bg from '@/assets/bg.png'
+import bg from '@/assets/bg.jpg'
 const dashboard_name = await call('insights.api.shared.get_dashboard_name', {
 	dashboard_name: props.name,
 })
@@ -98,13 +98,35 @@ const verticalCompact = useStorage('dashboard_vertical_compact', true)
     <div ref="dashboardContainer" class="flex-1 overflow-y-auto p-4">
       
       <!-- Card Jam & Tanggal di atas grid -->
-     <div class="flex gap-2 mb-1 ml-2">
-       <div
-    	class="flex items-center justify-center bg-white/50 backdrop-blur-md rounded-md shadow px-2 h-7"
-  		>
-          <span style="color: gray !important;" class="text-gray font-medium">{{ time }} | {{ date }}</span>
-        </div>
-      </div>
+  <div class="flex items-center gap-4 mb-3 ml-2">
+
+  <!-- Title + Subtitle -->
+  <div class="flex flex-col leading-tight">
+    <span class="text-lg font-semibold text-gray-800 tracking-wide">
+ 	<Breadcrumbs
+			:items="[
+				{ label: 'Dashboards', route: '/dashboards' },
+				{ label: dashboard.doc.title, route: `/dashboards/${dashboard.doc.name}` },
+			]"
+		/>
+    </span>
+    <span class="text-xs text-gray-600 italic mt-1">
+      Data UnAudited
+    </span>
+  </div>
+
+  <!-- Time Box (no rounded) -->
+  <div class="flex items-center justify-center
+              bg-white/40 backdrop-blur-md
+              shadow-sm
+              px-4 h-8 border border-white/30">
+    <span class="text-xs font-medium text-gray-700 tracking-wide">
+      {{ time }} | {{ date }}
+    </span>
+  </div>
+
+</div>
+
 
       <VueGridLayout
         v-if="dashboard.doc.items.length > 0"
