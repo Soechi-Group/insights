@@ -55,76 +55,52 @@ const verticalCompact = useStorage('dashboard_vertical_compact', true)
 
 <template>
 
-	<!-- <header class="flex h-12 items-center justify-between border-b py-2.5 pl-5 pr-2">
-		<Breadcrumbs
-			:items="[
-				{ label: 'Dashboards', route: '/dashboards' },
-				{ label: dashboard.doc.title, route: `/dashboards/${dashboard.doc.name}` },
-			]"
-		/>
-		<div class="flex items-center gap-2">
-			<Button variant="outline" @click="() => dashboard.refresh(true)" label="Refresh">
-				<template #prefix>
-					<RefreshCcw class="h-4 w-4 text-black-700" stroke-width="1.5" />
-				</template>
-			</Button>
-			<Dropdown
-				placement="left"
-				:button="{ icon: 'more-vertical', variant: 'outline' }"
-				:options="[
-					{
-						label: 'Export as PNG 2',
-						variant: 'outline',
-						icon: 'download',
-						onClick: downloadDashboardImage,
-					},
-					{
-						label: 'Open Workbook',
-						variant: 'outline',
-						icon: 'external-link',
-						onClick: openWorkbook,
-					},
-				]"
-			/>
-		</div>
-	</header> -->
+<div class="relative flex h-full w-full overflow-hidden":style="bgStyle">
+<div ref="dashboardContainer" class="flex-1 overflow-y-auto p-4">
+  <!-- LOGO KIRI POJOK -->
+<img
+  src="https://digital-sign.soechi.com/Content/Images/logo%20only.png"
+  alt="Logo"
+  class="
+    absolute
+    top-4 left-6
+    h-[50px]
+    w-auto
+    object-contain
+    z-50
+  "
+/>
 
 
 
 
-	 <div class="relative flex h-full w-full overflow-hidden":style="bgStyle">
- 
-    
-    <div ref="dashboardContainer" class="flex-1 overflow-y-auto p-4">
-      
-      <!-- Card Jam & Tanggal di atas grid -->
-  <div class="flex items-center gap-4 mb-3 ml-2">
+<div class="flex justify-center mb-3">
+<div class="flex flex-col items-center leading-tight">
+<h1
+  class="
+    text-[30px]
+    font-bold
+    text-blue-800
+    tracking-tight
+    z-50
+  "
+>
+  {{ dashboard.doc.title }}
+</h1>
 
-  <!-- Title + Subtitle -->
-  <div class="flex flex-col leading-tight">
-    <span class="text-lg font-semibold text-gray-800 tracking-wide">
- 	<Breadcrumbs
-			:items="[
-				{ label: 'Dashboards', route: '/dashboards' },
-				{ label: dashboard.doc.title, route: `/dashboards/${dashboard.doc.name}` },
-			]"
-		/>
-    </span>
-    <span class="text-xs text-gray-600 italic mt-1">
-      Data UnAudited
+
+  <div
+    class="mt-1 flex items-center justify-center
+           bg-white/40 backdrop-blur-md
+           shadow-sm
+           px-4 h-8 border border-white/30"
+  >
+    <span class="text-xs font-bold text-blue-700 tracking-wide">
+      <span class="text-blue-600">Data UnAudited :</span>
+      &nbsp;{{ time }} | {{ date }}
     </span>
   </div>
-
-  <!-- Time Box (no rounded) -->
-  <div class="flex items-center justify-center
-              bg-white/40 backdrop-blur-md
-              shadow-sm
-              px-4 h-8 border border-white/30">
-    <span class="text-xs font-medium text-gray-700 tracking-wide">
-      {{ time }} | {{ date }}
-    </span>
-  </div>
-
+</div>
 </div>
 
 

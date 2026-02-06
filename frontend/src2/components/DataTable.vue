@@ -214,26 +214,43 @@ function toggleNewColumn() {
 // --------------------------
 const rowsWithChange = computed(() => {
   if (!props.rows || !props.columns) return []
-  return props.rows.map((row, rowIdx) => {
+
+  const numberColumns = props.columns.filter(col => isNumberColumn(col.name)).map(col => col.name)
+
+  return props.rows.map((row) => {
     const changes: Record<string, { arrow: string | null, percent: number | null }> = {}
-    props.columns.forEach((col, colIdx) => {
-      if (rowIdx === 0 || !isNumberColumn(col.name)) {
-        changes[col.name] = { arrow: null, percent: null }
-      } else {
-        const prev = Number(props.rows![rowIdx - 1][col.name])
-        const curr = Number(row[col.name])
-        if (curr > prev) {
-          changes[col.name] = { arrow: '↑', percent: ((curr - prev) / prev) * 100 }
-        } else if (curr < prev) {
-          changes[col.name] = { arrow: '↓', percent: ((curr - prev) / prev) * 100 }
-        } else {
-          changes[col.name] = { arrow: '-', percent: 0 }
-        }
-      }
+    
+    numberColumns.forEach((colName, idx) => {
+     if (idx === 0) {
+  changes[colName] = { arrow: null, percent: null }
+} else {
+  const prev = Number(row[numberColumns[idx - 1]])
+  const curr = Number(row[colName])
+
+  if (prev === 0) {
+    if (curr === 0) {
+      changes[colName] = { arrow: '-', percent: 0 }
+    } else {
+      changes[colName] = { arrow: '↑', percent: null } 
+    }
+  } else {
+    const changePercent = ((curr - prev) / prev) * 100
+    if (changePercent > 0) {
+      changes[colName] = { arrow: '↑', percent: changePercent }
+    } else if (changePercent < 0) {
+      changes[colName] = { arrow: '↓', percent: changePercent }
+    } else {
+      changes[colName] = { arrow: '-', percent: 0 }
+    }
+  }
+}
+
     })
+
     return { ...row, _changes: changes }
   })
 })
+
 </script>
 
 <template>
@@ -327,11 +344,41 @@ const rowsWithChange = computed(() => {
               <a :href="row[col.name]" target="_blank" class="underline">{{ row[col.name] }}</a>
             </template>
             <template v-else>{{ row[col.name] }}</template>
+            
           </td>
-
+   
           <td v-if="props.enableNewColumn" class="h-8 border-b border-r px-3"></td>
           <td v-if="props.showRowTotals && totalPerRow" class="tnum h-8 border-b border-r px-3 text-right font-bold">{{ _formatNumber(totalPerRow[idx]) }}</td>
+      
         </tr>
+        <tr
+						v-if="props.showColumnTotals && totalPerColumn"
+						class="sticky bottom-0 z-10 border-b bg-white"
+					>
+						<td class="h-8 whitespace-nowrap border-r border-t px-3"></td>
+						<td
+							v-for="col in props.columns"
+							class="h-8 truncate border-r border-t px-3 font-bold text-black-800"
+							:class="[
+								isNumberColumn(col.name) ? 'tnum text-right' : 'text-left',
+								isStickyColumn(col.name) ? 'sticky z-10 bg-white' : '',
+							]"
+							:style="getStickyColumnStyle(col.name)"
+						>
+							{{
+								isNumberColumn(col.name)
+									? _formatNumber(totalPerColumn[col.name])
+									: ''
+							}}
+						</td>
+
+						<td
+							v-if="props.showRowTotals && totalColumnTotal"
+							class="tnum h-8 border-r border-t px-3 text-right font-bold"
+						>
+							{{ _formatNumber(totalColumnTotal) }}
+						</td>
+					</tr>
       </tbody>
     </table>
   </div>
