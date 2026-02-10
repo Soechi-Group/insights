@@ -227,22 +227,7 @@ const rowsWithChange = computed(() => {
   const prev = Number(row[numberColumns[idx - 1]])
   const curr = Number(row[colName])
 
-  if (prev === 0) {
-    if (curr === 0) {
-      changes[colName] = { arrow: '-', percent: 0 }
-    } else {
-      changes[colName] = { arrow: '↑', percent: null } 
-    }
-  } else {
-    const changePercent = ((curr - prev) / prev) * 100
-    if (changePercent > 0) {
-      changes[colName] = { arrow: '↑', percent: changePercent }
-    } else if (changePercent < 0) {
-      changes[colName] = { arrow: '↓', percent: changePercent }
-    } else {
-      changes[colName] = { arrow: '-', percent: 0 }
-    }
-  }
+   changes[colName] = { arrow: '', percent: null } 
 }
 
     })
