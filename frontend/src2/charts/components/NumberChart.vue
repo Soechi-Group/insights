@@ -17,19 +17,25 @@ const emit = defineEmits<{
 const config = computed(() => props.config)
 
 const numberColumns = computed(() => {
-	return config.value.number_columns.filter((c) => c.measure_name).map((c) => c.measure_name)
+	return config.value.number_columns
+		.filter((c) => c.measure_name)
+		.map((c) => c.measure_name)
 })
+
 const dateValues = computed(() => {
 	if (!config.value.date_column) return []
 	const date_column = config.value.date_column.column_name
 	return props.result.rows.map((row: any) => row[date_column])
 })
+
 const numberValuesPerColumn = computed(() => {
 	if (!config.value.number_columns?.length) return {}
 	if (!props.result?.columns.length) return {}
 
 	return numberColumns.value.reduce((acc: any, measure_name: string) => {
-		acc[measure_name] = props.result.rows.map((row: any) => row[measure_name])
+		acc[measure_name] = props.result.rows.map(
+			(row: any) => row[measure_name]
+		)
 		return acc
 	}, {})
 })
@@ -43,10 +49,15 @@ const cards = computed(() => {
 		const numberValues = numberValuesPerColumn.value[measure_name]
 		const currentValue = numberValues[numberValues.length - 1] || 0
 		const previousValue = numberValues[numberValues.length - 2] || 0
+
 		const delta = config.value.negative_is_better
 			? previousValue - currentValue
 			: currentValue - previousValue
-		const percentDelta = (delta / Math.abs(previousValue)) * 100
+
+		const percentDelta =
+			previousValue !== 0
+				? (delta / Math.abs(previousValue)) * 100
+				: 0
 
 		const prefix = getNumberOption(idx, 'prefix')
 		const suffix = getNumberOption(idx, 'suffix')
@@ -57,10 +68,22 @@ const cards = computed(() => {
 		return {
 			measure_name,
 			values: numberValues,
-			currentValue: getFormattedValue(currentValue, decimal, shorten_numbers),
-			previousValue: getFormattedValue(previousValue, decimal, shorten_numbers),
+			currentValue: getFormattedValue(
+				currentValue,
+				decimal,
+				shorten_numbers
+			),
+			previousValue: getFormattedValue(
+				previousValue,
+				decimal,
+				shorten_numbers
+			),
 			delta,
-			percentDelta: getFormattedValue(percentDelta, decimal, shorten_numbers),
+			percentDelta: getFormattedValue(
+				percentDelta,
+				decimal,
+				shorten_numbers
+			),
 			prefix,
 			suffix,
 			color,
@@ -68,7 +91,11 @@ const cards = computed(() => {
 	})
 })
 
-const getFormattedValue = (value: number, decimal?: number, shorten_numbers?: boolean) => {
+const getFormattedValue = (
+	value: number,
+	decimal?: number,
+	shorten_numbers?: boolean
+) => {
 	if (isNaN(value)) return 0
 	if (shorten_numbers) {
 		return getShortNumber(value, decimal)
@@ -77,23 +104,63 @@ const getFormattedValue = (value: number, decimal?: number, shorten_numbers?: bo
 }
 
 function getNumberOption(index: number, option: keyof NumberColumnOptions) {
-	const numberOption = config.value.number_column_options?.[index]?.[option] as any
+	const numberOption =
+		config.value.number_column_options?.[index]?.[option] as any
 	return numberOption === undefined ? config.value[option] : numberOption
 }
 
 function onDoubleClick(measure_name: string) {
-	const column = props.result.columns.find((c) => c.name === measure_name)
+	const column = props.result.columns.find(
+		(c) => c.name === measure_name
+	)
 	const row = props.result.formattedRows.at(-1)
 	if (column && row) {
 		emit('drillDown', column, row)
 	}
+}
+
+/* ================================
+   Dynamic Background & Accent by Card Name
+================================ */
+function getCardBackground(measure_name: string) {
+	const name = measure_name.toLowerCase()
+
+	if (name.includes('remain')) {
+		return '#DDE4EB' // Budget - stronger soft blue
+	}
+
+	if (
+		name.includes('spending') ||
+		name.includes('spent') ||
+		name.includes('util')
+	) {
+		return '#8efaec' // Spending - soft gray/blue, clearly different
+	}
+	// Budget first supaya lebih prioritas
+	if (name.includes('budget')) {
+		return '#9dc3fc' // Budget - stronger soft blue
+	}
+
+	// Spending keywords: spending, spent, util, remain
+	
+
+	return '#FFFFFF' // default
+}
+
+function getAccentColor(measure_name: string) {
+	const name = measure_name.toLowerCase()
+
+		return '#7A8C99' // abu kebiruan lebih gelap
 }
 </script>
 
 <template>
 	<div class="h-full w-full overflow-hidden p-[2px] @container">
 		<div
-			class="grid h-full w-full grid-cols-1 gap-4 @xs:grid-cols-2 @sm:grid-cols-2 @md:grid-cols-2 @lg:grid-cols-2 @xl:grid-cols-3 @3xl:grid-cols-4 @4xl:grid-cols-5"
+			class="grid h-full w-full grid-cols-1 gap-4
+			@xs:grid-cols-2 @sm:grid-cols-2 @md:grid-cols-2
+			@lg:grid-cols-2 @xl:grid-cols-3
+			@3xl:grid-cols-4 @4xl:grid-cols-5"
 		>
 			<div
 				v-for="{
@@ -107,42 +174,51 @@ function onDoubleClick(measure_name: string) {
 					color,
 				} in cards"
 				:key="measure_name"
-			class="flex h-[140px] items-center gap-2 overflow-hidden rounded 
-            px-6 pt-5 shadow cursor-pointer"
-   style="background-color: rgba(255, 255, 255, 0.5);
-backdrop-filter: blur(4px);"
+				class="flex h-[140px] items-center gap-2 overflow-hidden rounded 
+				px-6 pt-5 shadow cursor-pointer"
+				:style="{ backgroundColor: getCardBackground(measure_name) }"
 				:class="config.comparison ? 'pb-6' : 'pb-3'"
 				@dblclick="onDoubleClick(measure_name)"
 			>
 				<div class="flex w-full flex-col">
-					<span class="truncate text-sm font-medium">
-						{{ measure_name }}
-					</span>
+					<!-- Title + Accent Line -->
+					<div class="mb-2">
+						<span class="truncate text-sm font-medium">{{ measure_name }}</span>
+						<div
+					  class="mt-1 h-0.5 w-full rounded"
+							:style="{ backgroundColor: getAccentColor(measure_name) }"
+						></div>
+					</div>
+
+					<!-- Current Value -->
 					<div
 						class="flex-1 flex-shrink-0 truncate text-[24px] font-semibold leading-10"
 						:style="color && typeof color === 'string' ? { color: color } : {}"
 					>
 						{{ prefix }}{{ currentValue }}{{ suffix }}
 					</div>
+
+					<!-- Delta Comparison -->
 					<div
 						v-if="config.comparison"
 						class="flex items-center gap-1 text-xs font-medium"
-						:class="[
-						config.negative_is_better
-						? delta >= 0
-							? 'text-red-500 font-bold'
-							: 'text-blue-900 dark:text-blue-300 font-bold'
-						: delta >= 0
-							? 'text-blue-900 dark:text-blue-300 font-bold'
-							: 'text-red-800 font-bold'
-								,
+						:class="[ 
+							config.negative_is_better
+								? delta >= 0
+									? 'text-red-500 font-bold'
+									: 'text-blue-900 dark:text-blue-300 font-bold'
+								: delta >= 0
+								? 'text-blue-900 dark:text-blue-300 font-bold'
+								: 'text-red-800 font-bold'
 						]"
 					>
-						<span class="">
+						<span>
 							{{ delta >= 0 ? '↑' : '↓' }}
 						</span>
 						<span> {{ percentDelta }}% </span>
 					</div>
+
+					<!-- Sparkline -->
 					<div v-if="config.sparkline" class="mt-2 h-[18px] w-[80px]">
 						<Sparkline
 							:dates="dateValues"
